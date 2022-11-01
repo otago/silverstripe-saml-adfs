@@ -1,0 +1,17 @@
+---
+Name: mysamlsettings
+After: "#samlsettings"
+---
+SilverStripe\Core\Injector\Injector:
+  SilverStripe\Security\Security:
+    properties:
+      Authenticators:
+        default: '%$SilverStripe\SAML\Authenticators\SAMLAuthenticator'
+
+SilverStripe\Security\Authenticator:
+  default_authenticator: SilverStripe\SAML\Authenticators\SAMLAuthenticator
+
+SilverStripe\Control\Director:
+  rules:
+    "saml": OP\SAMLADFS\Controllers\Controller
+    "Security/logout": OP\SAMLADFS\Controllers\Controller
