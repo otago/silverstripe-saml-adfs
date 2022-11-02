@@ -2,10 +2,12 @@
 
 namespace OP\SAMLADFS\Controllers;
 
+use Exception;
 use SilverStripe\Assets\FilenameParsing\HashFileIDHelper;
 use SilverStripe\Core\Environment;
 use SilverStripe\Core\Injector\Injector;
 use SilverStripe\ORM\DataObject;
+use SilverStripe\ORM\DB;
 use SilverStripe\SAML\Control\SAMLController;
 use SilverStripe\SAML\Helpers\SAMLHelper;
 use SilverStripe\Security\IdentityStore;
@@ -41,20 +43,22 @@ class Controller extends SAMLController
 
     public static function SettingSP()
     {
-        $siteconfig = DataObject::get_one(SiteConfig::class);
-        if ($siteconfig->SP_Private_KeyID && $siteconfig->SP_X509_CertID) {
+        try {
+            $siteconfig = DataObject::get_one(SiteConfig::class);
             return [
                 'entityId' => Environment::getEnv("SAMLADFS_SP_ENTITY_ID"),
                 'privateKey' => self::getProtectedFilePath($siteconfig->SP_Private_Key()),
                 'x509cert' => self::getProtectedFilePath($siteconfig->SP_X509_Cert())
             ];
+        } catch (Exception $e) {
+            return [];
         }
     }
 
     public static function SettingIDP()
     {
+        try {
         $siteconfig = DataObject::get_one(SiteConfig::class);
-        if ($siteconfig->IDP_X509_CertID) {
             return [
                 'entityId' => Environment::getEnv("SAMLADFS_IDP_ENTITY_ID"),
                 'singleSignOnService' => Environment::getEnv("SAMLADFS_IDP_SINGLE_SIGNON_SERVICE"),
@@ -62,6 +66,8 @@ class Controller extends SAMLController
                 'metadata' => Environment::getEnv("SAMLADFS_IDP_METADATA"),
                 'x509cert' => self::getProtectedFilePath($siteconfig->IDP_X509_Cert())
             ];
+        } catch (Exception $e) {
+            return [];
         }
     }
 
