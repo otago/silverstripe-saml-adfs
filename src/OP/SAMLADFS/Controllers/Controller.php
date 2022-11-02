@@ -7,7 +7,6 @@ use SilverStripe\Assets\FilenameParsing\HashFileIDHelper;
 use SilverStripe\Core\Environment;
 use SilverStripe\Core\Injector\Injector;
 use SilverStripe\ORM\DataObject;
-use SilverStripe\ORM\DB;
 use SilverStripe\SAML\Control\SAMLController;
 use SilverStripe\SAML\Helpers\SAMLHelper;
 use SilverStripe\Security\IdentityStore;
@@ -58,7 +57,7 @@ class Controller extends SAMLController
     public static function SettingIDP()
     {
         try {
-        $siteconfig = DataObject::get_one(SiteConfig::class);
+            $siteconfig = DataObject::get_one(SiteConfig::class);
             return [
                 'entityId' => Environment::getEnv("SAMLADFS_IDP_ENTITY_ID"),
                 'singleSignOnService' => Environment::getEnv("SAMLADFS_IDP_SINGLE_SIGNON_SERVICE"),
