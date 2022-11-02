@@ -1,0 +1,14 @@
+SilverStripe\Assets\File:
+  allowed_extensions:
+    - key
+    - cer
+    - pem
+
+SilverStripe\MimeValidator\MimeUploadValidator:
+  MimeTypes:
+    key:
+      - "text/plain"
+    cer:
+      - "text/plain"
+    pem:
+      - "text/plain"
