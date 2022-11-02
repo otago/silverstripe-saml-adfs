@@ -5,3 +5,7 @@ SilverStripe\Security\Security:
 SilverStripe\SiteConfig\SiteConfig:
   extensions:
     - OP\SAMLADFS\Extensions\SiteConfig
+
+SilverStripe\Security\Member:
+  extensions:
+    - OP\SAMLADFS\Extensions\Member
