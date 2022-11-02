@@ -22,7 +22,7 @@ class Controller extends SAMLController
         $auth->processResponse();
         $request = $this->getRequest();
         $attributes = $auth->getAttributes();
-        echo '<Pre>'; var_dump($attributes); die();
+        $this->extend('handleResponse', $auth);
     }
 
     public static function SettingSP()
