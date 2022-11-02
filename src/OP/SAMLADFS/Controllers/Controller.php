@@ -25,7 +25,7 @@ class Controller extends SAMLController
         echo '<Pre>'; var_dump($attributes); die();
     }
 
-    public static function SP()
+    public static function SettingSP()
     {
         $siteconfig = DataObject::get_one(SiteConfig::class);
         return [
@@ -35,7 +35,7 @@ class Controller extends SAMLController
         ];
     }
 
-    public static function IDP()
+    public static function SettingIDP()
     {
         $siteconfig = DataObject::get_one(SiteConfig::class);
         return [
@@ -45,6 +45,26 @@ class Controller extends SAMLController
             'metadata' => Environment::getEnv("SAMLADFS_IDP_METADATA"),
             'x509cert' => self::getProtectedFilePath($siteconfig->IDP_X509_Cert())
         ];
+    }
+
+    public static function SettingDisableAuthnContexts()
+    {
+        return Environment::getEnv("SAMLADFS_DISABLE_AUTHN_CONTEXTS");
+    }
+
+    public static function SettingNameIdEncrypted()
+    {
+        return Environment::getEnv("SAMLADFS_NAME_ID_ENCRYPED");
+    }
+
+    public static function SettingStrict()
+    {
+        return Environment::getEnv("SAMLADFS_STRICT");
+    }
+
+    public static function SettingDebug()
+    {
+        return Environment::getEnv("SAMLADFS_DEBUG");
     }
 
     public static function getProtectedFilePath($protected_file)
