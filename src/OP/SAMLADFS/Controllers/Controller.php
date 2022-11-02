@@ -8,6 +8,7 @@ use SilverStripe\Core\Injector\Injector;
 use SilverStripe\ORM\DataObject;
 use SilverStripe\SAML\Control\SAMLController;
 use SilverStripe\SAML\Helpers\SAMLHelper;
+use SilverStripe\Security\IdentityStore;
 use SilverStripe\Security\Member;
 use SilverStripe\Security\Security;
 use SilverStripe\SiteConfig\SiteConfig;
@@ -28,8 +29,14 @@ class Controller extends SAMLController
         ];
         $this->extend('handleAuthData', $data);
         $member = Member::get()->filter("SAMLADFSGUID", $data["guid"])->First();
-        Security::setCurrentUser($member);
-        $this->extend('handleRedirect');
+        if ($member) {
+            $member->SAMLSessionIndex = $auth->getSessionIndex();
+            $member->write();
+            $identityStore = Injector::inst()->get(IdentityStore::class);
+            $persistent = Security::config()->get('autologin_enabled');
+            $identityStore->logIn($member, $persistent, $this->getRequest());
+            $this->extend('handleRedirect');
+        }
     }
 
     public static function SettingSP()
