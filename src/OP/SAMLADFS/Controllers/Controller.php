@@ -54,7 +54,7 @@ class Controller extends SAMLController
     public static function SettingIDP()
     {
         $siteconfig = DataObject::get_one(SiteConfig::class);
-        if ($siteconfig->SP_Private_KeyID && $siteconfig->IDP_X509_CertID) {
+        if ($siteconfig->IDP_X509_CertID) {
             return [
                 'entityId' => Environment::getEnv("SAMLADFS_IDP_ENTITY_ID"),
                 'singleSignOnService' => Environment::getEnv("SAMLADFS_IDP_SINGLE_SIGNON_SERVICE"),
