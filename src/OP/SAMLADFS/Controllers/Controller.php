@@ -42,23 +42,27 @@ class Controller extends SAMLController
     public static function SettingSP()
     {
         $siteconfig = DataObject::get_one(SiteConfig::class);
-        return [
-            'entityId' => Environment::getEnv("SAMLADFS_SP_ENTITY_ID"),
-            'privateKey' => self::getProtectedFilePath($siteconfig->SP_Private_Key()),
-            'x509cert' => self::getProtectedFilePath($siteconfig->SP_X509_Cert())
-        ];
+        if ($siteconfig->SP_Private_KeyID && $siteconfig->SP_X509_CertID) {
+            return [
+                'entityId' => Environment::getEnv("SAMLADFS_SP_ENTITY_ID"),
+                'privateKey' => self::getProtectedFilePath($siteconfig->SP_Private_Key()),
+                'x509cert' => self::getProtectedFilePath($siteconfig->SP_X509_Cert())
+            ];
+        }
     }
 
     public static function SettingIDP()
     {
         $siteconfig = DataObject::get_one(SiteConfig::class);
-        return [
-            'entityId' => Environment::getEnv("SAMLADFS_IDP_ENTITY_ID"),
-            'singleSignOnService' => Environment::getEnv("SAMLADFS_IDP_SINGLE_SIGNON_SERVICE"),
-            'singleLogoutService' => Environment::getEnv("SAMLADFS_IDP_SINGLE_LOGOUT_SERVICE"),
-            'metadata' => Environment::getEnv("SAMLADFS_IDP_METADATA"),
-            'x509cert' => self::getProtectedFilePath($siteconfig->IDP_X509_Cert())
-        ];
+        if ($siteconfig->SP_Private_KeyID && $siteconfig->IDP_X509_CertID) {
+            return [
+                'entityId' => Environment::getEnv("SAMLADFS_IDP_ENTITY_ID"),
+                'singleSignOnService' => Environment::getEnv("SAMLADFS_IDP_SINGLE_SIGNON_SERVICE"),
+                'singleLogoutService' => Environment::getEnv("SAMLADFS_IDP_SINGLE_LOGOUT_SERVICE"),
+                'metadata' => Environment::getEnv("SAMLADFS_IDP_METADATA"),
+                'x509cert' => self::getProtectedFilePath($siteconfig->IDP_X509_Cert())
+            ];
+        }
     }
 
     public static function SettingDisableAuthnContexts()
